@@ -3,22 +3,22 @@ import uniqid from 'uniqid';
 
 const ToDo = () => {
 
-    const [task,
-        setTask] = useState('');
-    const [taskList,
-        setTasksList] = useState([]);
+    const [task, setTask] = useState('');
+    const [taskList, setTasksList] = useState([]);
 
     const addTask = (e) => {
-        e.preventDefault();
+        e.preventDefault(); // para que no se refresque la página al hacer submit
         const newTask = {
             id: uniqid(),
             title: task
         }
-        setTasksList([
-            ...taskList,
-            newTask
-        ])
+        setTasksList([...taskList, newTask])
         setTask('')
+    }
+
+    const deleteTask = (id) => {
+        const newTaskList = taskList.filter(item => item.id !== id)
+        setTasksList(newTaskList);
     }
 
     return (
@@ -42,8 +42,14 @@ const ToDo = () => {
                 <div className="col">
                     <h3>Listado de tareas</h3>
                     <ul className="list-group">
-                        {taskList.map(item => <li key={item.id} className="list-group-item">{item.title}</li>)
-}
+                        {
+                            taskList.map(item => 
+                                <li key={item.id} className="list-group-item">
+                                    {item.title}
+                                    <button className="btn btn-danger float-right" onClick={() => {deleteTask(item.id) } }>X</button>
+                                </li>
+                            )
+                        }
 
                     </ul>
                 </div>
